@@ -29,7 +29,13 @@ authRouter.post("/signup", async (req, res) => {
     const savedUser = await user.save();
     const token = await savedUser.getJWT();
 
-    res.cookie("token", token);
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,        // REQUIRED on Render
+        sameSite: "None",    // REQUIRED for cross-origin
+        maxAge: 24 * 60 * 60 * 1000,
+  });
+
 
     res.json({ message: "user added successfully ", data: savedUser });
   } catch (err) {
@@ -62,8 +68,11 @@ authRouter.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      secure: true,       
+      sameSite: "None",    
+      maxAge: 24 * 60 * 60 * 1000,
     });
+
 
     return res.status(200).json({ message: "Login successful", user });
   } catch (err) {
@@ -77,10 +86,13 @@ authRouter.post("/logout", async (req, res) => {
     return res.status(401).send("Please log in first!");
     
   }
-  res.cookie("token", null, {
-    expires: new Date(Date.now()),
+  res.cookie("token", "", {
     httpOnly: true,
+    secure: true,
+    sameSite: "None",
+    expires: new Date(0),
   });
+
   res.send("You are successfully logged our!!!");
 });
 
