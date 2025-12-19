@@ -8,7 +8,7 @@ import UpdateProfile from "./Components/UpdateProfile";
 import NewPostPage from "./Components/NewPostPage";
 import { Provider } from "react-redux";
 import appStore, { persistor } from "./utils/appStore";
-import ProtectRoute from "./Components/protectRoute";
+import ProtectRoute from "./Components/ProtectRoute";
 import PostPage from "./Components/PostPage";
 import { PersistGate } from "redux-persist/integration/react";
 import AllPost from "./Components/AllPost";
